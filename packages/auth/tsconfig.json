@@ -1,4 +1,0 @@
-{
-  "extends": "@byfinances/tsconfig/library.json",
-  "include": ["src/**/*"]
-}

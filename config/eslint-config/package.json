@@ -14,8 +14,6 @@
   },
   "prettier": "@byfinances/prettier",
   "eslintConfig": {
-    "extends": [
-      "./library.js"
-    ]
+    "extends": ["./library.js"]
   }
 }
