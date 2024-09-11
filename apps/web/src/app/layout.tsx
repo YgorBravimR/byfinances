@@ -6,8 +6,8 @@ import "./globals.css"
 const font = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "BYPLO",
-  description: "Soluções que conectam!",
+  title: 'ByFinances',
+  description: 'Monyy',
 }
 
 export default function RootLayout({
@@ -17,7 +17,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(font.className, "min-h-screen overflow-x-hidden bg-slate-100 dark:bg-[#000207]")}>{children}</body>
+      <body
+        className={cn(
+          font.className,
+          'min-h-screen overflow-x-hidden bg-slate-100 dark:bg-[#000207]'
+        )}
+      >
+        {children}
+      </body>
     </html>
   )
 }

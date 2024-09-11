@@ -1,13 +1,18 @@
 {
-  "name": "my-turborepo",
+  "name": "byfinances",
   "private": true,
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint"
   },
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "config/*"
+  ],
   "devDependencies": {
-    "turbo": "2.1.1"
+    "turbo": "latest"
   },
   "packageManager": "pnpm@8.15.6",
   "engines": {
