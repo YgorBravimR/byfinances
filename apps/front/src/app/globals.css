@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply text-black dark:text-white bg-white dark:bg-slate-950 min-h-screen h-full p-0 m-0;
+}
+
+/* styles.css */
+.DialogOverlay {
+  background: rgba(0 0 0 / 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+}
+
+.DialogContent {
+  min-width: 300px;
+  background: white;
+  padding: 30px;
+  border-radius: 4px;
+}
+
+/* The next properties are related to the input labels, it's a workaround to make the label goes to top when input is focused. */
+.relative input:focus + label,
+.relative input:not(:placeholder-shown) + label {
+  top: 0px;
+  left: 6px;
+  padding: 0;
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+  color: #2f363e;
+}
+
+.relative label {
+  pointer-events: none;
+  background-color: white;
+  padding: 0 2px;
+  transition: all 0.2s ease-in-out;
+}

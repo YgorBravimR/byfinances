@@ -1,0 +1,183 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  user_id    Int        @id @default(autoincrement())
+  name       String
+  email      String     @unique
+  password   String
+  created_at DateTime   @default(now())
+  updated_at DateTime   @default(now())
+  deleted_at DateTime?
+  accounts   accounts[]
+}
+
+model accounts {
+  account_id  Int       @id @default(autoincrement())
+  user_id     Int
+  name        String
+  description String?
+  bank        String
+  color       String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  deleted_at  DateTime?
+
+  credit_cards credit_cards[]
+  transactions transactions[] @relation("account_transactions")
+  transferTo   transactions[] @relation("transactions_transfer_to")
+  users        users          @relation(fields: [user_id], references: [user_id])
+}
+
+model credit_cards {
+  credit_card_id Int       @id @default(autoincrement())
+  account_id     Int
+  name           String
+  brand          String
+  description    String?
+  closing_day    Int
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @default(now())
+  deleted_at     DateTime?
+
+  accounts     accounts       @relation(fields: [account_id], references: [account_id])
+  transactions transactions[]
+}
+
+enum TransactionsType {
+  income
+  expense
+  transfer
+  creditCard
+}
+
+enum TransactionsRepeatUnitType {
+  day
+  week
+  month
+  year
+}
+
+model transactions {
+  transaction_id         Int                         @id @default(autoincrement())
+  account_id             Int
+  credit_card_id         Int?
+  transfer_to_account_id Int?
+  type                   TransactionsType
+  amount                 Int
+  is_completed           Boolean                     @default(false)
+  transaction_date       DateTime
+  description            String?
+  tag_ids                Int[]
+  observations           String?
+  is_fixed               Boolean                     @default(false)
+  repeat_quantity        Int?
+  repeat_unit            TransactionsRepeatUnitType? @default(day)
+  position               Int?
+  created_at             DateTime                    @default(now())
+  updated_at             DateTime                    @default(now())
+  deleted_at             DateTime?
+
+  accounts              accounts                @relation("account_transactions", fields: [account_id], references: [account_id])
+  credit_cards          credit_cards?            @relation(fields: [credit_card_id], references: [credit_card_id])
+  transfer_to           accounts?               @relation("transactions_transfer_to", fields: [transfer_to_account_id], references: [account_id])
+  repeated_transactions repeated_transactions[]
+  fixed_transactions    fixed_transactions[]
+}
+
+model repeated_transactions {
+  repeated_transaction_id Int       @id @default(autoincrement())
+  first_transaction_id    Int
+  total_quantity          Int
+  is_active               Boolean   @default(true)
+  created_at              DateTime  @default(now())
+  updated_at              DateTime  @default(now())
+  deleted_at              DateTime?
+
+  transactions transactions @relation(fields: [first_transaction_id], references: [transaction_id])
+}
+
+model fixed_transactions {
+  fixed_transaction_id Int       @id @default(autoincrement())
+  main_transaction_id  Int
+  total_quantity       Int
+  is_active            Boolean   @default(true)
+  created_at           DateTime  @default(now())
+  updated_at           DateTime  @default(now())
+  deleted_at           DateTime?
+
+  transactions transactions @relation(fields: [main_transaction_id], references: [transaction_id])
+}
+
+model budgets {
+  budget_id         Int                 @id @default(autoincrement())
+  name              String
+  description       String
+  is_active         Boolean
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @default(now())
+  deleted_at        DateTime?
+  budget_categories budget_categories[]
+}
+
+model budget_categories {
+  budget_category_id Int     @id @default(autoincrement())
+  budget_id          Int
+  name               String
+  tags               tags[]  @relation("BudgetCategoriesTags")
+  description        String
+  percent_amount     Decimal
+
+  budgets budgets @relation(fields: [budget_id], references: [budget_id])
+}
+
+model tags {
+  tag_id      Int       @id @default(autoincrement())
+  name        String
+  description String
+  color       String
+  main_tag_id Int?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  deleted_at  DateTime?
+
+  // Self-referencing relation
+  parent_tag tags?  @relation("TagHierarchy", fields: [main_tag_id], references: [tag_id])
+  sub_tags   tags[] @relation("TagHierarchy")
+
+  budget_categories budget_categories[] @relation("BudgetCategoriesTags")
+}
+
+model categories {
+  category_id      Int       @id @default(autoincrement())
+  main_category_id Int?
+  name             String
+  description      String
+  color            String
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @default(now())
+  deleted_at       DateTime?
+
+  // Self-referencing relation
+  parent_category categories?  @relation("CategoryHierarchy", fields: [main_category_id], references: [category_id])
+  sub_category    categories[] @relation("CategoryHierarchy")
+}
+
+model goals {
+  goal_id        Int       @id @default(autoincrement())
+  name           String
+  description    String
+  color          String
+  target_amount  Int
+  initial_amount Int
+  end_date       DateTime
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @default(now())
+  deleted_at     DateTime?
+}

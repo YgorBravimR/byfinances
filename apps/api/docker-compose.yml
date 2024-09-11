@@ -1,0 +1,13 @@
+services:
+  postgres:
+    container_name: byfinances
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: finances
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: byplo
+      PG_DATA: /data/postgres
+    volumes:
+      - ./data/pg:/data/postgres
