@@ -1,10 +1,11 @@
-import { FastifyInstance } from "fastify"
-import { UsersController } from "./controller"
-import { authMiddleware } from "@/http/middlewares/auth"
+import { FastifyInstance } from 'fastify'
+import { UsersController } from './controller'
+import { authMiddleware } from '@/http/middlewares/auth'
 
-const BASE_PATH = "/users"
+const BASE_PATH = '/users'
 
 // TODO - Study ZodTypeProvider method
+// TODO - Study and implement swagger documentation
 
 export async function usersRoutes(app: FastifyInstance) {
   app.register(authMiddleware).get(`${BASE_PATH}`, UsersController.getAll)

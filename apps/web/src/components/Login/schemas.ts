@@ -1,11 +1,11 @@
-import { z } from "zod"
+import { z } from 'zod'
 
 export const SignInSchema = z.object({
   email: z.string().email({ message: 'Please, provide a valid e-mail address' }),
   password: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
 })
 
-export type SignInFormSchema = z.infer<typeof SignInSchema>
+export type SignInFormType = z.infer<typeof SignInSchema>
 
 export const SignUpSchema = z.object({
   email: z.string().email({ message: 'Please, provide a valid e-mail address' }),
@@ -14,4 +14,4 @@ export const SignUpSchema = z.object({
   confirmPassword: z.string().min(8, 'Confirm Password must be at least 8 characters long').optional(),
 })
 
-export type SignUpFormSchema = z.infer<typeof SignUpSchema>
+export type SignUpFormType = z.infer<typeof SignUpSchema>

@@ -1,7 +1,7 @@
-import { compare, hash } from "bcryptjs"
-import { UsersRepository } from "src/modules/users/repository"
-import { BadRequestError } from "./../../http/custom-errors"
-import { CreateUserDTO, SignInUserDTO, UpdateUserDTO } from "./models"
+import { compare, hash } from 'bcryptjs'
+import { UsersRepository } from 'src/modules/users/repository'
+import { BadRequestError } from './../../http/custom-errors'
+import { CreateUserDTO, SignInUserDTO, UpdateUserDTO } from './models'
 
 const usersRepository = new UsersRepository()
 
@@ -18,6 +18,13 @@ class UsersService {
 
   async getProfile(userId: number) {
     const res = await usersRepository.getProfile(userId)
+
+    console.log('userId', userId)
+
+    if (!res) {
+      throw new BadRequestError('User not found')
+    }
+
     return res
   }
 
@@ -47,16 +54,13 @@ class UsersService {
 
   async signIn(data: SignInUserDTO) {
     const res = await usersRepository.signIn(data)
+    const invalidDataMessage = 'Email or password incorrect'
 
-    if (!res) {
-      throw new BadRequestError('User not found')
-    }
+    if (!res) throw new BadRequestError(invalidDataMessage)
 
     const isValidPassword = await compare(data.password, res.password)
 
-    if (!isValidPassword) {
-      throw new BadRequestError('Invalid password')
-    }
+    if (!isValidPassword) throw new BadRequestError(invalidDataMessage)
 
     const { name, email, user_id } = res
 

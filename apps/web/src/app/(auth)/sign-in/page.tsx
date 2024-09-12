@@ -1,8 +1,8 @@
-import { Login } from "@/components/Login"
+import { Login } from '@/components/Login'
 
 export default async function Page() {
   return (
-    <main className="w-screen h-screen flex justify-center items-center gap-4">
+    <main className="bg-background flex h-screen w-screen items-center justify-center gap-4 p-4">
       <Login />
     </main>
   )

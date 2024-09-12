@@ -1,9 +1,8 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import Image from 'next/image'
-import { useMemo, useState } from "react"
-import { SignInForm } from "./forms/SignIn"
-import { SignUpForm } from "./forms/SignUp"
+'use client'
+import { Button } from '@/components/ui/button'
+import { useMemo, useState } from 'react'
+import { SignInForm } from './forms/SignIn'
+import { SignUpForm } from './forms/SignUp'
 
 export const Login = () => {
   const [step, setStep] = useState<'signup' | 'signin'>('signin')
@@ -11,21 +10,21 @@ export const Login = () => {
   const formSteps = useMemo(
     () => ({
       signin: {
-        title: "Entrar",
+        title: 'Sign In',
         jsx: <SignInForm />,
         changeStep: {
-          text: "Ainda não tem uma conta?",
-          buttonText: "Cadastre-se",
-          onClick: () => setStep("signup"),
+          text: 'Not registered yet?',
+          buttonText: 'Sign up now',
+          onClick: () => setStep('signup'),
         },
       },
       signup: {
-        title: "Cadastrar",
+        title: 'Sign Up',
         jsx: <SignUpForm />,
         changeStep: {
-          text: "Já está cadastrado?",
-          buttonText: "Entrar",
-          onClick: () => setStep("signin"),
+          text: 'Already registered?',
+          buttonText: 'Sign In',
+          onClick: () => setStep('signin'),
         },
       },
     }),
@@ -33,18 +32,15 @@ export const Login = () => {
   )
 
   return (
-    <main className="flex items-center justify-center w-full min-h-screen">
-      <div className="mx-auto w-[450px] h-[450px] flex flex-col items-center justify-center gap-6 bg-white shadow-2xl rounded-md relative">
-        <Image src={"/greenLogo.png"} alt="" width={40} height={80} className="object-contain absolute top-2 left-2" />
-        <h1 className="text-2xl font-bold">{formSteps[step].title}</h1>
-        {formSteps[step].jsx}
-        <div className="text-sm flex gap-2 items-center">
-          {formSteps[step].changeStep.text}
-          <Button size="sm" variant="link" onClick={formSteps[step].changeStep.onClick} className="text-sm text-[#003E4D]">
-            {formSteps[step].changeStep.buttonText}
-          </Button>
-        </div>
+    <div className="relative mx-auto flex h-[450px] w-[450px] flex-col items-center justify-center gap-6 rounded-md bg-white p-14 shadow-2xl ">
+      <h1 className="text-2xl font-bold">{formSteps[step].title}</h1>
+      {formSteps[step].jsx}
+      <div className="flex items-center gap-2 text-sm">
+        {formSteps[step].changeStep.text}
+        <Button size="sm" variant="link" onClick={formSteps[step].changeStep.onClick} className="text-sm text-[#003E4D]">
+          {formSteps[step].changeStep.buttonText}
+        </Button>
       </div>
-    </main>
+    </div>
   )
 }

@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { FormErrorMessage } from '@/components/FormErrorMessage'
+import { FormItemWithMessage } from '@/components/FormErrorMessage'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -11,20 +11,19 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { signIn } from '../actions'
-import { SignInFormSchema, SignInSchema } from '../schemas'
+import { SignInFormType, SignInSchema } from '../schemas'
 
 export const SignInForm = () => {
-  // const [{ success, message, errors }, formAction, isPending] = useActionState(signIn, { success: false, message: null, errors: null })
   const [{ success, message, errors }, submit, isPending] = useCustomFormState(signIn, () => router.push('/'))
 
   const router = useRouter()
 
-  const { register } = useForm<SignInFormSchema>({
+  const { register } = useForm<SignInFormType>({
     resolver: zodResolver(SignInSchema),
   })
 
   return (
-    <form className="flex flex-col items-center gap-2" onSubmit={submit}>
+    <form className="flex w-full flex-col items-center gap-6" onSubmit={submit}>
       {success === false && message && (
         <Alert variant="destructive">
           <AlertTriangle className="size-4" />
@@ -34,17 +33,19 @@ export const SignInForm = () => {
           </AlertDescription>
         </Alert>
       )}
-      <div className="grid gap-4">
-        <Input type="email" label="E-mail" placeholder="E-mail" id="signin-email" {...register('email')} />
-        {errors?.email && <FormErrorMessage message={errors.email[0]} />}
-        <Input type="password" label="Senha" placeholder="Senha" id="signin-email" {...register('password')} />
-        {errors?.password && <FormErrorMessage message={errors.password[0]} />}
-        <Link href={'/sign-in/recover'} className="-mt-3 text-xs hover:underline">
-          Esqueceu a senha?
+      <div className="grid w-full gap-6">
+        <FormItemWithMessage message={errors?.email ? errors?.email[0] : null}>
+          <Input type="email" label="E-mail" placeholder="E-mail" id="signin-email" {...register('email')} />
+        </FormItemWithMessage>
+        <FormItemWithMessage message={errors?.password ? errors.password[0] : null}>
+          <Input type="password" label="Password" placeholder="Password" id="signin-password" {...register('password')} />
+        </FormItemWithMessage>
+        <Link href={'/sign-in/recover'} className="-mt-2 text-xs hover:underline">
+          Forgot your password?
         </Link>
       </div>
       <Button size="sm" type="submit" className="w-24">
-        {isPending ? <Loader2 className="size-4 animate-spin" /> : 'Entrar'}
+        {isPending ? <Loader2 className="size-4 animate-spin" /> : 'Sign In'}
       </Button>
     </form>
   )

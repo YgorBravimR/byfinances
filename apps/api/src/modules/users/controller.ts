@@ -1,17 +1,7 @@
-import { FastifyReply, FastifyRequest } from "fastify"
-import { UsersService } from "src/modules/users/service"
-import { v4 as uuidV4 } from "uuid"
-import {
-  CreateUserDTO,
-  CreateUserSchema,
-  GenerateTokenDTO,
-  SignInUserDTO,
-  SignInUserSchema,
-  UpdateUserDTO,
-  UpdateUserSchema,
-} from "./models"
-import { BadRequestError } from '@/http/custom-errors'
 import { getUserId } from '@/lib/auth'
+import { FastifyReply, FastifyRequest } from 'fastify'
+import { UsersService } from 'src/modules/users/service'
+import { CreateUserDTO, CreateUserSchema, GenerateTokenDTO, SignInUserDTO, SignInUserSchema, UpdateUserDTO, UpdateUserSchema } from './models'
 
 const usersService = new UsersService()
 
@@ -31,13 +21,11 @@ class UsersController {
   }
 
   static async getProfile(req: FastifyRequest, res: FastifyReply) {
-    const { user_id: userId } = await req.jwtVerify<{ user_id: number }>()
+    console.log('entrei')
+    const userId = await getUserId(req)
+    console.log('userId', userId)
 
-    const response = await usersService.getById(userId)
-
-    if (response) {
-      throw new BadRequestError('User not found')
-    }
+    const response = await usersService.getProfile(userId)
 
     return res.status(200).send(response)
   }
@@ -62,10 +50,6 @@ class UsersController {
 
   static async update(req: FastifyRequest<{ Body: UpdateUserDTO }>, res: FastifyReply) {
     const userId = await getUserId(req)
-
-    if (userId) {
-      throw new BadRequestError('User not found')
-    }
 
     const validatedBody = UpdateUserSchema.parse(req.body)
 

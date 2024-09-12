@@ -1,33 +1,56 @@
-"use client"
+'use client'
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Loader2 } from "lucide-react"
-import { useActionState } from "react"
-import { useForm } from "react-hook-form"
-import { signUp } from "../actions"
-import { SignUpFormSchema, SignUpSchema } from "../schemas"
+import { FormItemWithMessage } from '@/components/FormErrorMessage'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { useCustomFormState } from '@/hooks/useCustomFormState'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { AlertTriangle, Loader2 } from 'lucide-react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { signUp } from '../actions'
+import { SignUpFormType, SignUpSchema } from '../schemas'
 
 export const SignUpForm = () => {
-  const [state, formAction, isPending] = useActionState(signUp, null)
+  const router = useRouter()
+  const [{ success, message, errors }, submit, isPending] = useCustomFormState(signUp, () => router.push('/'))
 
-  const { register } = useForm<SignUpFormSchema>({
+  const { register } = useForm<SignUpFormType>({
     resolver: zodResolver(SignUpSchema),
   })
 
   return (
-    <form className="flex flex-col gap-2 items-center" action={formAction}>
-      <h2>{state}</h2>
-      <div className="grid gap-4">
-        <Input type="text" id="signup-name" label="Nome" placeholder="Email" {...register("name")} />
-        <Input type="email" id="signup-email" label="Email" placeholder="Email" {...register("email")} />
-        <Input type="password" id="signup-password" label="Senha" placeholder="Senha" {...register("password")} />
-        <Input type="password" id="signup-password-confirm" label="Confirmar Senha" placeholder="Confirmar Senha" {...register("confirmPassword")} />
-      </div>
-      <Button size="sm" type="submit" className="w-24">
-        {isPending ? <Loader2 className="size-4 animate-spin" /> : "Cadastrar"}
-      </Button>
-    </form>
+    <>
+      <form className="flex w-full flex-col items-center gap-6" onSubmit={submit}>
+        {success === false && message && (
+          <Alert variant="destructive">
+            <AlertTriangle className="size-4" />
+            <AlertTitle>Sign in failed!</AlertTitle>
+            <AlertDescription>
+              <p>{message}</p>
+            </AlertDescription>
+          </Alert>
+        )}
+        <div className="grid w-full gap-6">
+          <FormItemWithMessage message={errors?.name ? errors?.name[0] : null}>
+            <Input type="text" label="Name" placeholder="Name" id="signup-name" {...register('name')} />
+          </FormItemWithMessage>
+          <FormItemWithMessage message={errors?.email ? errors.email[0] : null}>
+            <Input type="email" label="E-mail" placeholder="E-mail" id="signup-email" {...register('email')} />
+          </FormItemWithMessage>
+          <FormItemWithMessage message={errors?.password ? errors.password[0] : null}>
+            <Input type="password" label="Password" placeholder="Password" id="signup-password" {...register('password')} />
+          </FormItemWithMessage>
+          <FormItemWithMessage message={errors?.confirmPassword ? errors.confirmPassword[0] : null}>
+            <Input type="password" label="Repeat Password" placeholder="Repeat Password" id="signup-password-confirm" {...register('confirmPassword')} />
+          </FormItemWithMessage>
+        </div>
+        <Button size="sm" type="submit" className="w-24">
+          {isPending ? <Loader2 className="size-4 animate-spin" /> : 'Register'}
+        </Button>
+      </form>
+    </>
   )
 }

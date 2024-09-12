@@ -1,7 +1,13 @@
 interface Props {
-  message: string
+  message: string | null
+  children: React.ReactNode
 }
 
-export const FormErrorMessage = ({ message }: Props) => {
-  return <p className="text-xs font-medium text-red-500 dark:text-red-900">{message}</p>
+export const FormItemWithMessage = ({ message, children }: Props) => {
+  return (
+    <div className="w-full">
+      {children}
+      {message && <p className="absolute truncate text-center text-xs font-medium text-red-500 dark:text-red-900">{message}</p>}
+    </div>
+  )
 }
