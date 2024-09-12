@@ -8,6 +8,7 @@ const BASE_PATH = "/users"
 
 export async function usersRoutes(app: FastifyInstance) {
   app.register(authMiddleware).get(`${BASE_PATH}`, UsersController.getAll)
+  app.register(authMiddleware).get(`${BASE_PATH}/profile`, UsersController.getProfile)
   app.register(authMiddleware).get(`${BASE_PATH}/:userId`, UsersController.getById)
 
   app.post(`${BASE_PATH}/sign-up`, UsersController.create)

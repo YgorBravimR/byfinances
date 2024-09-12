@@ -20,6 +20,20 @@ class UsersRepository {
     return res
   }
 
+  async getProfile(userId: number) {
+    const res = await prisma.users.findUnique({
+      where: {
+        user_id: userId,
+      },
+      select: {
+        user_id: true,
+        name: true,
+        email: true,
+      },
+    })
+    return res
+  }
+
   async getByEmail(email: string) {
     const res = await prisma.users.findUnique({
       where: {
@@ -46,10 +60,10 @@ class UsersRepository {
     return res
   }
 
-  async update(data: UpdateUserDTO) {
+  async update(userId: number, data: UpdateUserDTO) {
     const res = await prisma.users.update({
       where: {
-        user_id: data.userId,
+        user_id: userId,
       },
       data: {
         name: data.name,

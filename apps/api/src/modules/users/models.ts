@@ -9,7 +9,6 @@ export const CreateUserSchema = z.object({
 export type CreateUserDTO = z.infer<typeof CreateUserSchema>
 
 export const UpdateUserSchema = z.object({
-  userId: z.number(),
   email: z.string().optional(),
   password: z.string().optional(),
   name: z.string().optional(),

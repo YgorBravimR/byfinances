@@ -16,12 +16,17 @@ class UsersService {
     return res
   }
 
+  async getProfile(userId: number) {
+    const res = await usersRepository.getProfile(userId)
+    return res
+  }
+
   async create(data: CreateUserDTO) {
     const { email, name, password } = data
     const hasUser = await usersRepository.getByEmail(email)
 
     if (hasUser) {
-      throw new BadRequestError("User with this email already exists.")
+      throw new BadRequestError('User with this email already exists.')
     }
 
     const passwordHash = await hash(password, 6)
@@ -29,14 +34,14 @@ class UsersService {
     const res = await usersRepository.create({ email, name, password: passwordHash })
 
     if (!res) {
-      throw new Error("Error creating user")
+      throw new Error('Error creating user')
     }
 
     return res
   }
 
-  async update(data: UpdateUserDTO) {
-    const res = await usersRepository.update(data)
+  async update(userId: number, data: UpdateUserDTO) {
+    const res = await usersRepository.update(userId, data)
     return res
   }
 
@@ -44,13 +49,13 @@ class UsersService {
     const res = await usersRepository.signIn(data)
 
     if (!res) {
-      throw new BadRequestError("User not found")
+      throw new BadRequestError('User not found')
     }
 
     const isValidPassword = await compare(data.password, res.password)
 
     if (!isValidPassword) {
-      throw new BadRequestError("Invalid password")
+      throw new BadRequestError('Invalid password')
     }
 
     const { name, email, user_id } = res
