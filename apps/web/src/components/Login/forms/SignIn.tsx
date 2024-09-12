@@ -1,27 +1,30 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { FormErrorMessage } from '@/components/FormErrorMessage'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { useCustomFormState } from '@/hooks/useCustomFormState'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { AlertTriangle, Loader2 } from 'lucide-react'
 import Link from 'next/link'
-import { useActionState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { signIn } from '../actions'
 import { SignInFormSchema, SignInSchema } from '../schemas'
-import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form'
-import { FormErrorMessage } from '@/components/FormErrorMessage'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 export const SignInForm = () => {
-  const [{ success, message, errors }, formAction, isPending] = useActionState(signIn, { success: false, message: null, errors: null })
+  // const [{ success, message, errors }, formAction, isPending] = useActionState(signIn, { success: false, message: null, errors: null })
+  const [{ success, message, errors }, submit, isPending] = useCustomFormState(signIn, () => router.push('/'))
+
+  const router = useRouter()
 
   const { register } = useForm<SignInFormSchema>({
     resolver: zodResolver(SignInSchema),
   })
 
   return (
-    <form className="flex flex-col items-center gap-2" action={formAction}>
+    <form className="flex flex-col items-center gap-2" onSubmit={submit}>
       {success === false && message && (
         <Alert variant="destructive">
           <AlertTriangle className="size-4" />

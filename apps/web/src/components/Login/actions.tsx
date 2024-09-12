@@ -3,11 +3,11 @@
 import { authApi } from "@/http/apiClient"
 import { SignInSchema } from './schemas'
 import { HTTPError } from 'ky'
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
-export async function signIn(_: unknown, data: FormData) {
+export async function signIn(data: FormData) {
   const { email, password } = Object.fromEntries(data)
-
-  console.log('ygir', email, password)
 
   const result = SignInSchema.safeParse({ email, password })
 
@@ -18,9 +18,8 @@ export async function signIn(_: unknown, data: FormData) {
   }
 
   try {
-    const token = await authApi.post(`users/sign-in`, { json: { email, password } }).json<{ access_token: string }>()
-
-    console.log('token', token)
+    const { access_token } = await authApi.post(`users/sign-in`, { json: { email, password } }).json<{ access_token: string }>()
+    cookies().set('access_token', access_token, { maxAge: 60 * 60 * 24, path: '/' })
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message } = await err.response.json()
@@ -32,6 +31,7 @@ export async function signIn(_: unknown, data: FormData) {
 
     return { success: false, message: 'Unexpected error, try again in a few minutes.', errors: null }
   }
+
   return { success: true, message: null, errors: null }
 }
 

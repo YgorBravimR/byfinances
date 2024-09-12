@@ -1,34 +1,12 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import Image from "next/image"
-import { useRouter } from "next/navigation"
+import Image from 'next/image'
 import { useMemo, useState } from "react"
 import { SignInForm } from "./forms/SignIn"
 import { SignUpForm } from "./forms/SignUp"
 
 export const Login = () => {
-  const [step, setStep] = useState<"signup" | "signin">("signin")
-  const router = useRouter()
-
-  // const handleSubmit = useCallback(
-  //   async (data: SignUpFormSchema | SignInFormSchema) => {
-  //     if (step === "signin") {
-  //       const req = await fetchApi<{ access_token: string }>({ data, endpoint: "/users", method: "POST" })
-
-  //       if (req?.access_token) {
-  //         setCookie("access_token", req.access_token, { expires: add(new Date(), { days: 1 }) })
-
-  //         router.push("/")
-  //       } else {
-  //         console.log("Eroooou")
-  //         window.alert("Usuário ou senha inválidos")
-  //       }
-  //     } else {
-  //       console.log("signup")
-  //     }
-  //   },
-  //   [step, router]
-  // )
+  const [step, setStep] = useState<'signup' | 'signin'>('signin')
 
   const formSteps = useMemo(
     () => ({
