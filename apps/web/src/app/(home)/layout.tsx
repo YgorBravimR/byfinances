@@ -1,12 +1,12 @@
-import Navbar from "@/components/Navbar"
-import { Toaster } from "@/components/ui/toaster"
-import type { Metadata } from "next"
-import "../globals.css"
-import { Sidebar } from "@/components/Sidebar"
-import { ptBR } from "date-fns/locale"
-import { setDefaultOptions } from "date-fns"
 import { isAuthenticated } from '@/auth'
+import Navbar from '@/components/Navbar'
+import { Sidebar } from '@/components/Sidebar'
+import { Toaster } from '@/components/ui/toaster'
+import { setDefaultOptions } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+import '../globals.css'
 
 export const metadata: Metadata = {
   title: 'BYPLO',
@@ -29,7 +29,7 @@ export default async function IndoorLayout({
       <Sidebar />
       <div className="flex w-full flex-col">
         <Navbar />
-        <main className="flex-grow overflow-auto">{children}</main>
+        <main className="flex-grow overflow-auto bg-accent text-accent-foreground">{children}</main>
       </div>
       <Toaster />
     </div>

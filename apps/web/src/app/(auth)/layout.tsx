@@ -12,9 +12,9 @@ export default async function AuthLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  if (isAuthenticated()) {
+  if (await isAuthenticated()) {
     redirect('/')
   }
 
-  return <>{children}</>
+  return <main className="flex h-screen w-screen items-center justify-center gap-4 bg-primary-foreground p-4">{children}</main>
 }

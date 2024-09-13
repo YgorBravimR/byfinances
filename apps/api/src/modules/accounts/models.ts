@@ -1,11 +1,11 @@
 import { z } from "zod"
 
 export const CreateAccountSchema = z.object({
-  userId: z.number(),
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
-  bank: z.string().min(1, "Bank is required"),
-  color: z.string().min(1, "Color is required"),
+  bank: z.string().min(1, 'Bank is required'),
+  color: z.string().min(1, 'Color is required'),
+  initialBalance: z.number().optional(),
 })
 
 export type CreateAccountDTO = z.infer<typeof CreateAccountSchema>

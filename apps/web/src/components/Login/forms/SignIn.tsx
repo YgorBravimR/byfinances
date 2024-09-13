@@ -10,11 +10,11 @@ import { AlertTriangle, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { signIn } from '../actions'
-import { SignInFormType, SignInSchema } from '../schemas'
+import { signInFormAction } from '../actions'
+import { SignInFormType, SignInSchema } from '../types'
 
 export const SignInForm = () => {
-  const [{ success, message, errors }, submit, isPending] = useCustomFormState(signIn, () => router.push('/'))
+  const [{ success, message, errors }, submit, isPending] = useCustomFormState(signInFormAction, () => router.push('/'))
 
   const router = useRouter()
 
@@ -38,7 +38,13 @@ export const SignInForm = () => {
           <Input type="email" label="E-mail" placeholder="E-mail" id="signin-email" {...register('email')} />
         </FormItemWithMessage>
         <FormItemWithMessage message={errors?.password ? errors.password[0] : null}>
-          <Input type="password" label="Password" placeholder="Password" id="signin-password" {...register('password')} />
+          <Input
+            type="password"
+            label="Password"
+            placeholder="Password"
+            id="signin-password"
+            {...register('password')}
+          />
         </FormItemWithMessage>
         <Link href={'/sign-in/recover'} className="-mt-2 text-xs hover:underline">
           Forgot your password?

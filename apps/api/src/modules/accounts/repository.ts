@@ -21,14 +21,15 @@ class AccountsRepository {
     return res
   }
 
-  async create(data: CreateAccountDTO) {
+  async create(userId: number, data: CreateAccountDTO) {
     const res = await prisma.accounts.create({
       data: {
+        user_id: userId,
         name: data.name,
-        user_id: data.userId,
         description: data.description,
         bank: data.bank,
         color: data.color,
+        initial_balance: data.initialBalance,
       },
     })
     return res

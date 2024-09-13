@@ -21,9 +21,7 @@ class UsersController {
   }
 
   static async getProfile(req: FastifyRequest, res: FastifyReply) {
-    console.log('entrei')
     const userId = await getUserId(req)
-    console.log('userId', userId)
 
     const response = await usersService.getProfile(userId)
 

@@ -10,12 +10,12 @@ import { AlertTriangle, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { signUp } from '../actions'
-import { SignUpFormType, SignUpSchema } from '../schemas'
+import { signUpFormAction } from '../actions'
+import { SignUpFormType, SignUpSchema } from '../types'
 
 export const SignUpForm = () => {
   const router = useRouter()
-  const [{ success, message, errors }, submit, isPending] = useCustomFormState(signUp, () => router.push('/'))
+  const [{ success, message, errors }, submit, isPending] = useCustomFormState(signUpFormAction, () => router.push('/'))
 
   const { register } = useForm<SignUpFormType>({
     resolver: zodResolver(SignUpSchema),
@@ -41,10 +41,22 @@ export const SignUpForm = () => {
             <Input type="email" label="E-mail" placeholder="E-mail" id="signup-email" {...register('email')} />
           </FormItemWithMessage>
           <FormItemWithMessage message={errors?.password ? errors.password[0] : null}>
-            <Input type="password" label="Password" placeholder="Password" id="signup-password" {...register('password')} />
+            <Input
+              type="password"
+              label="Password"
+              placeholder="Password"
+              id="signup-password"
+              {...register('password')}
+            />
           </FormItemWithMessage>
           <FormItemWithMessage message={errors?.confirmPassword ? errors.confirmPassword[0] : null}>
-            <Input type="password" label="Repeat Password" placeholder="Repeat Password" id="signup-password-confirm" {...register('confirmPassword')} />
+            <Input
+              type="password"
+              label="Repeat Password"
+              placeholder="Repeat Password"
+              id="signup-password-confirm"
+              {...register('confirmPassword')}
+            />
           </FormItemWithMessage>
         </div>
         <Button size="sm" type="submit" className="w-24">

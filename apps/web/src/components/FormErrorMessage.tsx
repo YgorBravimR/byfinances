@@ -1,5 +1,5 @@
 interface Props {
-  message: string | null
+  message: string | null | undefined
   children: React.ReactNode
 }
 

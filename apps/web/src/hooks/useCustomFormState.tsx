@@ -6,7 +6,11 @@ interface FormState {
   errors: Record<string, string[]> | null
 }
 
-export function useCustomFormState(action: (data: FormData) => Promise<FormState>, onSuccess?: () => Promise<void> | void, initialState?: FormState) {
+export const useCustomFormState = (
+  action: (data: FormData) => Promise<FormState>,
+  onSuccess?: () => Promise<void> | void,
+  initialState?: FormState
+) => {
   const [isPending, startTransition] = useTransition()
   const [formState, setFormState] = useState<FormState>(
     initialState ?? {

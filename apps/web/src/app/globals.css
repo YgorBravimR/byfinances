@@ -13,8 +13,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
 
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 192, 100%, 15%;
+    --primary-foreground: 192, 100%, 15%, 0.5;
 
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
@@ -27,6 +27,9 @@
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
+
+    --positive: 110 48% 42%;
+    --negative: 0 80% 45%;
 
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
@@ -46,7 +49,7 @@
     --popover-foreground: 0 0% 98%;
 
     --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
+    --primary-foreground: 191, 96%, 9%;
 
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
@@ -59,6 +62,10 @@
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
+
+
+    --positive: 110 79% 49%;
+    --negative: 0 100% 61%;
 
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
@@ -81,6 +88,7 @@ body {
   display: grid;
   place-items: center;
   overflow-y: auto;
+  color: #01252d
 }
 
 .DialogContent {
@@ -88,6 +96,8 @@ body {
   background: white;
   padding: 30px;
   border-radius: 4px;
+  color: #3ade1a;
+  color: #ff3939
 }
 
 /* The next properties are related to the input labels, it's a workaround to make the label goes to top when input is focused. */

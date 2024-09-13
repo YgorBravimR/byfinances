@@ -14,8 +14,8 @@ class AccountsService {
     return res
   }
 
-  async create(data: CreateAccountDTO) {
-    const res = await accountsRepository.create(data)
+  async create(userId: number, data: CreateAccountDTO) {
+    const res = await accountsRepository.create(userId, data)
     return res
   }
 
