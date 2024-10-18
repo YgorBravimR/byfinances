@@ -21,3 +21,11 @@ export const CreateAccountSchema = z.object({
 })
 
 export type CreateAccountDTO = z.infer<typeof CreateAccountSchema>
+
+export interface IBank {
+  bank_id: number
+  name: string
+  uid: string
+  color: string
+  deleted_at: Date | null
+}

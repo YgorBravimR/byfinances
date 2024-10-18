@@ -14,6 +14,11 @@ class AccountsService {
     return res
   }
 
+  async getBanks() {
+    const res = await accountsRepository.getBanks()
+    return res
+  }
+
   async create(userId: number, data: CreateAccountDTO) {
     const res = await accountsRepository.create(userId, data)
     return res

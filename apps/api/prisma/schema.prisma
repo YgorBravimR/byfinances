@@ -18,22 +18,33 @@ model users {
   accounts   accounts[]
 }
 
+model banks {
+  bank_id    Int        @id @default(autoincrement())
+  name       String
+  color      String // Sub it for logo url
+  uid        String     @unique
+  deleted_at DateTime?
+  accounts   accounts[]
+}
+
 model accounts {
-  account_id  Int       @id @default(autoincrement())
-  user_id     Int
-  name        String
-  description String?
-  bank        String
-  color       String
-  initial_balance Int @default(0)
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
-  deleted_at  DateTime?
+  account_id      Int       @id @default(autoincrement())
+  user_id         Int
+  bank_id         Int
+  name            String
+  description     String?
+  color           String
+  initial_balance Int       @default(0)
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @default(now())
+  deleted_at      DateTime?
 
   credit_cards credit_cards[]
   transactions transactions[] @relation("account_transactions")
   transferTo   transactions[] @relation("transactions_transfer_to")
   users        users          @relation(fields: [user_id], references: [user_id])
+  banks        banks          @relation(fields: [bank_id], references: [bank_id])
+
   @@unique([user_id, name])
 }
 
@@ -87,7 +98,7 @@ model transactions {
   deleted_at             DateTime?
 
   accounts              accounts                @relation("account_transactions", fields: [account_id], references: [account_id])
-  credit_cards          credit_cards?            @relation(fields: [credit_card_id], references: [credit_card_id])
+  credit_cards          credit_cards?           @relation(fields: [credit_card_id], references: [credit_card_id])
   transfer_to           accounts?               @relation("transactions_transfer_to", fields: [transfer_to_account_id], references: [account_id])
   repeated_transactions repeated_transactions[]
   fixed_transactions    fixed_transactions[]

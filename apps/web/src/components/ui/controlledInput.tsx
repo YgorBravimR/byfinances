@@ -30,7 +30,7 @@ export const ControlledInput = forwardRef<HTMLInputElement, ControlledInputProps
       props.onBlur?.(event)
     }
 
-    const inputValue = field.value ? formatter.format(field.value ?? '') : ''
+    const inputValue = field.value || field.value == 0 ? formatter.format(field.value ?? '') : ''
 
     return (
       <div className="relative">

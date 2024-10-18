@@ -23,7 +23,7 @@ export const CreateAccountModal = ({ isOpen, setIsOpen }: Props) => {
             <CircleX className="size-4" />
           </DialogClose>
         </div>
-        <CreateAccountForm />
+        <CreateAccountForm close={() => setIsOpen(false)} />
       </DialogContent>
     </Dialog>
   )

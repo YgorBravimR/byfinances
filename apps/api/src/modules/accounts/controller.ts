@@ -21,9 +21,14 @@ class AccountsController {
     return res.status(200).send(response)
   }
 
+  static async getBanks(req: FastifyRequest, res: FastifyReply) {
+    const response = await accountsService.getBanks()
+
+    return res.status(200).send(response)
+  }
+
   static async create(req: FastifyRequest<{ Body: CreateAccountDTO }>, res: FastifyReply) {
     const userId = await getUserId(req)
-    console.log('Body', req.body, userId)
 
     const validatedBody = CreateAccountSchema.parse(req.body)
 
