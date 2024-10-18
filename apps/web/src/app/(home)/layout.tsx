@@ -18,7 +18,9 @@ export default async function IndoorLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  if (!isAuthenticated()) {
+  const hasAccess = await isAuthenticated()
+
+  if (!hasAccess) {
     redirect('/sign-in')
   }
 

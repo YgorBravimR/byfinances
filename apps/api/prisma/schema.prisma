@@ -34,6 +34,7 @@ model accounts {
   transactions transactions[] @relation("account_transactions")
   transferTo   transactions[] @relation("transactions_transfer_to")
   users        users          @relation(fields: [user_id], references: [user_id])
+  @@unique([user_id, name])
 }
 
 model credit_cards {

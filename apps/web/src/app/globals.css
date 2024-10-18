@@ -96,8 +96,6 @@ body {
   background: white;
   padding: 30px;
   border-radius: 4px;
-  color: #3ade1a;
-  color: #ff3939
 }
 
 /* The next properties are related to the input labels, it's a workaround to make the label goes to top when input is focused. */
